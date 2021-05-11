@@ -13,4 +13,4 @@ app.get("/", (_, res) => {
   res.send("test!");
 });
 
-module.exports = app;
+export default app;
