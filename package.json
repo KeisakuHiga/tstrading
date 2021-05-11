@@ -2,9 +2,9 @@
   "name": "node-with-ts",
   "version": "1.0.0",
   "description": "",
-  "main": "controllers/webserver.ts",
+  "main": "src/server.ts",
   "scripts": {
-    "dev": "ts-node-dev --respawn --pretty --transpile-only src/controllers/webserver.ts",
+    "dev": "ts-node-dev --respawn --pretty --transpile-only src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
