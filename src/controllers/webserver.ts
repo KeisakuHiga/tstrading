@@ -1,5 +1,10 @@
-import express from "express";
+import app from "../app";
 
-const router = express.Router();
+const PORT: number = parseInt(process.env.PORT as string, 10);
 
-module.exports = router;
+if (!process.env.PORT) {
+  process.exit(1);
+}
+app.listen(PORT, () => {
+  return console.log(`server is listening on ${PORT}!`);
+});
