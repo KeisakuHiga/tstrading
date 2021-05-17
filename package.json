@@ -2,9 +2,9 @@
   "name": "node-with-ts",
   "version": "1.0.0",
   "description": "",
-  "main": "src/server.ts",
+  "main": "src/index.ts",
   "scripts": {
-    "dev": "ts-node-dev --respawn --pretty --transpile-only src/server.ts",
+    "dev": "ts-node-dev --respawn --pretty --transpile-only src/index.ts",
     "build-sass": "sass src/public/css/main.scss dist/public/css/main.css",
     "build-ts": "tsc",
     "build": "npm run build-ts && npm run lint",
