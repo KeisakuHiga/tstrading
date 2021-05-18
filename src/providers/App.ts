@@ -1,10 +1,9 @@
 import Express from './Express';
+import Log from '../middlewares/Log';
 
 class App {
   public loadServer(): void {
-    // want to Log.info here
-    console.log('Server booting');
-
+    Log.info('Server :: Booting @ Master...');
     Express.init();
   }
 }
