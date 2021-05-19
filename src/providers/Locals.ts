@@ -7,9 +7,18 @@ class Locals {
 		dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 		const port = process.env.PORT || 3000;
-
+		const PgUser = process.env.PG_USER;
+		const PgHost = process.env.PG_HOST;
+		const PgDatabase = process.env.PG_DATABASE;
+		const PgPassword = process.env.PG_PASSWORD;
+		const PgPort = process.env.PG_PORT;
 		return {
 			port,
+			PgUser,
+			PgHost,
+			PgDatabase,
+			PgPassword,
+			PgPort,
 		};
 	}
 
