@@ -6,19 +6,25 @@ class Locals {
 	public static config(): any {
 		dotenv.config({ path: path.join(__dirname, '../../.env') });
 
+		const name = 'Keisaku Higa';
 		const port = process.env.PORT || 3000;
 		const PgUser = process.env.PG_USER;
 		const PgHost = process.env.PG_HOST;
 		const PgDatabase = process.env.PG_DATABASE;
 		const PgPassword = process.env.PG_PASSWORD;
 		const PgPort = process.env.PG_PORT;
+
+		const apiPrefix = process.env.API_PREFIX || 'api';
+
 		return {
+			name,
 			port,
 			PgUser,
 			PgHost,
 			PgDatabase,
 			PgPassword,
 			PgPort,
+			apiPrefix,
 		};
 	}
 

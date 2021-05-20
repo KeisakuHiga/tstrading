@@ -1,12 +1,18 @@
 import express from 'express';
 
 import Locals from './Locals';
+import Routes from './Routes';
 
 class Express {
 	public express: express.Application;
 
 	constructor() {
 		this.express = express();
+		this.mountRoutes();
+	}
+
+	private mountRoutes(): void {
+		this.express = Routes.mountApi(this.express);
 	}
 
 	public init(): any {
