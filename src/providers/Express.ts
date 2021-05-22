@@ -1,4 +1,5 @@
 import express from 'express';
+import { Http2SecureServer } from 'node:http2';
 
 import Locals from './Locals';
 import Routes from './Routes';
@@ -18,10 +19,7 @@ class Express {
 	public init(): any {
     const port: number = Locals.config().port;
 
-		this.express.listen(port, (_error: any) => {
-			if (_error) {
-				return console.log('Error:', _error);
-			}
+		this.express.listen(port, (): void => {
 
 			return console.log(
 				'\x1b[33m%s\x1b[0m',
