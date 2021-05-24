@@ -1,5 +1,4 @@
 import express from 'express';
-import { Http2SecureServer } from 'node:http2';
 
 import Locals from './Locals';
 import Routes from './Routes';
