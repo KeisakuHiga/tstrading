@@ -15,7 +15,9 @@ class Locals {
 		const PgPort = process.env.PG_PORT;
 
 		const apiPrefix = process.env.API_PREFIX || 'api';
-
+		
+		const bfApiKey = process.env.BF_API_KEY;
+		const bfApiSecret = process.env.BF_API_SECRET;
 		return {
 			name,
 			port,
@@ -25,6 +27,8 @@ class Locals {
 			PgPassword,
 			PgPort,
 			apiPrefix,
+			bfApiKey,
+			bfApiSecret,
 		};
 	}
 
