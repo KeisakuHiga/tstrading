@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import Log from '../../middlewares/Log';
 
 interface Market {
@@ -24,6 +24,12 @@ interface Ticker {
 	volume_by_product: number;
 }
 
+interface ExtendedAxiosReqConf extends AxiosRequestConfig {
+	params: {
+		product_code?: string;
+	}
+}
+
 const baseURL = 'https://api.bitflyer.com/v1';
 
 class Bitflyer {
@@ -39,11 +45,11 @@ class Bitflyer {
 	}
 
 	static async ticker(req: any, res: any): Promise<any> {
-		const { product_code } = req.query;
+		const options: ExtendedAxiosReqConf = {
+			params: { product_code: req.query.product_code },
+		};
 		try {
-			const { data } = await axios.get<Ticker>(
-				`${baseURL}/ticker?product_code=${product_code}`,
-			);
+			const { data } = await axios.get<Ticker>(`${baseURL}/ticker`, options);
 			return res.json({
 				ticker: data,
 			});
