@@ -10,6 +10,12 @@ const client = new Client({
   port: Locals.config().PgPort,
 });
 
+const targetDurations = {
+  '1s': 1000,
+  '1m': 1000 * 60,
+  '1h': 1000 * 60 * 60,
+}
+
 export class Database {
   public static init(): any {
     client.connect((err) => {
@@ -18,7 +24,12 @@ export class Database {
 				Log.error(`database connection error:\n${err.stack}`);
 			}
     });
+    // create signal_events table if it does not exist
+    // create <product_code>_<duration> tables (durations: 1s, 1m, 1h)
+    // error handler
   }
+
+  // getCandleTableName method
 }
 
 export default client;
