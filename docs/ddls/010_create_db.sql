@@ -1,5 +1,5 @@
-CREATE DATABASE tstrading;
-  -- [ [ WITH ] [ OWNER [=] user_name ]
+CREATE DATABASE ts_trading_db
+WITH OWNER = ts_trading_db_admin 
   -- [ TEMPLATE [=] template ]
   -- [ ENCODING [=] encoding ]
   -- [ LC_COLLATE [=] lc_collate ]
@@ -8,3 +8,4 @@ CREATE DATABASE tstrading;
   -- [ ALLOW_CONNECTIONS [=] allowconn ]
   -- [ CONNECTION LIMIT [=] connlimit ]
   -- [ IS_TEMPLATE [=] istemplate ] ]
+  ;
