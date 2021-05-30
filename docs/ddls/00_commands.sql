@@ -1,3 +1,0 @@
--- \l: show list of dbs
--- \dt: show tables
--- \c <db_name> <user_name>: change db and connecting user

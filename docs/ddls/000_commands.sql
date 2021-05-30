@@ -1,0 +1,20 @@
+--- commands on command line --
+-- $ pg_ctl start                        // start Postgres server
+-- $ pg_ctl stop                         // stop Postgres server
+-- $ pg_ctl restart                      // restart Postgres server
+-- $ psql -d <db_name>                   // connect database
+
+-- commands after connecting dabanase --
+-- # CREATE ROLE name[ [ WITH ] option [ ... ] ]
+-- # CREATE DATABASE <db_name>;
+-- # DROP DATABASE <db_name>;
+-- # \
+-- # \
+-- # \
+-- # \
+-- # \
+-- # \
+-- # \
+-- # \l                                  // show list of dbs
+-- # \dt                                 // show tables
+-- # \c <db_name> <user_name>            // change db and connecting user
