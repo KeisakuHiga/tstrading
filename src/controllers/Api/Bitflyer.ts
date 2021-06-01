@@ -61,7 +61,7 @@ export default class Bitflyer {
 		}
 	}
 	static realTimeTicker(): void {
-		const publicChannels = Bitflyer.publicChannels();
+		const publicChannels = Bitflyer.getPublicChannels();
 		const client = new Client(bfWsLightStreamURL);
 		// connection handling
 		client.on('connected', async () => {
@@ -99,7 +99,7 @@ export default class Bitflyer {
 		//   "volume_by_product": 6703.96837634
 		// }
 	}
-	static publicChannels(): Array<string> {
+	static getPublicChannels(): Array<string> {
 		const pcs = Locals.config().productCodes;
 		const list: Array<string> = [];
 		pcs.forEach((pc: string) => {
