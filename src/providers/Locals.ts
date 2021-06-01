@@ -18,6 +18,7 @@ class Locals {
 		
 		const bfApiKey = process.env.BF_API_KEY;
 		const bfApiSecret = process.env.BF_API_SECRET;
+		const productCodes = process.env.BF_PRODUCT_CODES.split(',');
 		return {
 			name,
 			port,
@@ -29,6 +30,7 @@ class Locals {
 			apiPrefix,
 			bfApiKey,
 			bfApiSecret,
+			productCodes,
 		};
 	}
 

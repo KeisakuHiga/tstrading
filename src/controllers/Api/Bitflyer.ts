@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { Client } from 'jsonrpc2-ws';
 import Log from '../../middlewares/Log';
+import Locals from '../../providers/Locals';
 
 interface Market {
 	product_code: string;
@@ -32,6 +33,7 @@ interface ExtendedAxiosReqConf extends AxiosRequestConfig {
 }
 
 const baseURL = 'https://api.bitflyer.com/v1';
+const bfWsLightStreamURL = 'wss://ws.lightstream.bitflyer.com/json-rpc';
 
 export default class Bitflyer {
 	static async markets(_: any, res: any): Promise<any> {
@@ -58,9 +60,9 @@ export default class Bitflyer {
 			Log.error(err.message);
 		}
 	}
-	static async realTimeTicker(): Promise<any> {
-		const publicChannels = ['lightning_ticker_BTC_JPY'];
-		const client = new Client('wss://ws.lightstream.bitflyer.com/json-rpc');
+	static realTimeTicker(): void {
+		const publicChannels = Bitflyer.publicChannels();
+		const client = new Client(bfWsLightStreamURL);
 		// connection handling
 		client.on('connected', async () => {
 			// subscribe to the Public Channels
@@ -78,5 +80,13 @@ export default class Bitflyer {
 		client.methods.set('channelMessage', (client, notify) => {
 			console.log('channelMessage', notify.channel, notify.message);
 		});
+	}
+	static publicChannels(): Array<string> {
+		const pcs = Locals.config().productCodes;
+		const list: Array<string> = [];
+		pcs.forEach((pc: string) => {
+			list.push(`lightning_ticker_${pc}`);
+		});
+		return list;
 	}
 }
