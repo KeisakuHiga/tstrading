@@ -1,7 +1,7 @@
 import client from '../providers/Database';
 import Log from '../middlewares/Log';
 
-class Candle {
+export default class Candle {
 	static async getCandle(/* product_code: string, duration: string, dateTime: string */): Promise<any> {
 		try {
 			const { rows } = await client.query('SELECT NOW() as now');
@@ -11,5 +11,3 @@ class Candle {
 		}
 	}
 }
-
-export default Candle;
