@@ -80,6 +80,24 @@ export default class Bitflyer {
 		client.methods.set('channelMessage', (client, notify) => {
 			console.log('channelMessage', notify.channel, notify.message);
 		});
+		// example of notify.message
+		// {
+		//   "product_code": "BTC_JPY",
+		//   "timestamp": "2019-04-11T05:14:12.3739915Z",
+		//   "state": "RUNNING",
+		//   "tick_id": 25965446,
+		//   "best_bid": 580006,
+		//   "best_ask": 580771,
+		//   "best_bid_size": 2.00000013,
+		//   "best_ask_size": 0.4,
+		//   "total_bid_depth": 1581.64414981,
+		//   "total_ask_depth": 1415.32079982,
+		//   "market_bid_size": 0,
+		//   "market_ask_size": 0,
+		//   "ltp": 580790,
+		//   "volume": 6703.96837634,
+		//   "volume_by_product": 6703.96837634
+		// }
 	}
 	static publicChannels(): Array<string> {
 		const pcs = Locals.config().productCodes;
