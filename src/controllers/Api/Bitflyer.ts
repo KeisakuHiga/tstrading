@@ -78,6 +78,7 @@ export default class Bitflyer {
 		});
 		// channel messages handling
 		client.methods.set('channelMessage', (client, notify) => {
+			console.log('*'.repeat(50));
 			console.log('channelMessage', notify.channel, notify.message);
 		});
 		// example of notify.message
@@ -98,6 +99,8 @@ export default class Bitflyer {
 		//   "volume": 6703.96837634,
 		//   "volume_by_product": 6703.96837634
 		// }
+
+		// insert notify.message into database
 	}
 	static getPublicChannels(): Array<string> {
 		const pcs = Locals.config().productCodes;
@@ -106,5 +109,9 @@ export default class Bitflyer {
 			list.push(`lightning_ticker_${pc}`);
 		});
 		return list;
+	}
+
+	static parseTimestampToRFC3393(timestamp: Date): string {
+		return timestamp.toISOString();
 	}
 }
