@@ -9,7 +9,7 @@
     "build-ts": "tsc",
     "build": "npm run build-ts && npm run lint",
     "lint": "eslint . --ext ts --fix",
-    "test": "jest --forceExit --coverage --verbose",
+    "test": "jest --forceExit --coverage --silent=false --verbose false",
     "postinstall": "typesync"
   },
   "author": "",
@@ -44,6 +44,7 @@
     "express": "4.17.1",
     "helmet": "4.6.0",
     "jsonrpc2-ws": "*",
+    "moment": "2.29.1",
     "pg": "8.6.0"
   }
 }
