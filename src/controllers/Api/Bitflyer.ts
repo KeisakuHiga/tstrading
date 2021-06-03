@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import moment from 'moment';
 import { Client } from 'jsonrpc2-ws';
 import Log from '../../middlewares/Log';
 import Locals from '../../providers/Locals';
@@ -29,11 +30,12 @@ interface Ticker {
 interface ExtendedAxiosReqConf extends AxiosRequestConfig {
 	params: {
 		product_code?: string;
-	}
+	};
 }
 
 const baseURL = 'https://api.bitflyer.com/v1';
 const bfWsLightStreamURL = 'wss://ws.lightstream.bitflyer.com/json-rpc';
+const keepOffset = true;
 
 export default class Bitflyer {
 	static async markets(_: any, res: any): Promise<any> {
@@ -111,7 +113,14 @@ export default class Bitflyer {
 		return list;
 	}
 
-	static parseTimestampToRFC3393(timestamp: Date): string {
-		return timestamp.toISOString();
+	static timestampToISO8601(timestamp: Date): string {
+		return moment(timestamp).toISOString(keepOffset);
+	}
+
+	static truncateTimestamp(
+		timestamp: Date,
+		duration: moment.unitOfTime.StartOf,
+	): string {
+		return moment(timestamp).startOf(duration).toISOString(keepOffset);
 	}
 }
