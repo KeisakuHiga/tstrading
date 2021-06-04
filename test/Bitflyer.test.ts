@@ -23,3 +23,9 @@ test('truncateTimestamp w/ duration="hour"', () => {
 	const truncatedDate: string = Bitflyer.truncateTimestamp(testDate, 'hour');
 	expect(truncatedDate).toBe('2021-06-03T20:00:00.000+09:00');
 });
+
+test('truncateTimestamp w/ duration="day"', () => {
+	const testDate = '2021-06-03T20:45:29.123';
+	const truncatedDate: string = Bitflyer.truncateTimestamp(testDate, 'day');
+	expect(truncatedDate).toBe('2021-06-03T00:00:00.000+09:00');
+});

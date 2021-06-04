@@ -1,4 +1,4 @@
-INSERT INTO btc_jpy_1s
+INSERT INTO btc_jpy_second
   (
   time,
   open_price,
@@ -8,7 +8,7 @@ INSERT INTO btc_jpy_1s
   volume
   )
 VALUES(
-    '2021-06-01T03:30:14.481',
+    '2021-06-01T03:30:14.000+09:00',
     4322910,
     4842910,
     5082910,

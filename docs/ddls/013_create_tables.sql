@@ -8,7 +8,7 @@ CREATE TABLE signal_events
   PRIMARY KEY(time)
 );
 
-CREATE TABLE btc_jpy_1s
+CREATE TABLE btc_jpy_second
 (
   time TIMESTAMP NOT NULL,
   open_price NUMERIC,
@@ -19,7 +19,7 @@ CREATE TABLE btc_jpy_1s
   PRIMARY KEY(time)
 );
 
-CREATE TABLE btc_jpy_1m
+CREATE TABLE btc_jpy_minute
 (
   time TIMESTAMP NOT NULL,
   open_price NUMERIC,
@@ -30,7 +30,18 @@ CREATE TABLE btc_jpy_1m
   PRIMARY KEY(time)
 );
 
-CREATE TABLE btc_jpy_1h
+CREATE TABLE btc_jpy_hour
+(
+  time TIMESTAMP NOT NULL,
+  open_price NUMERIC,
+  close_price NUMERIC,
+  high_price NUMERIC,
+  low_price NUMERIC,
+  volume NUMERIC,
+  PRIMARY KEY(time)
+);
+
+CREATE TABLE btc_jpy_day
 (
   time TIMESTAMP NOT NULL,
   open_price NUMERIC,
