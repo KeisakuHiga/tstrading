@@ -1,6 +1,6 @@
 import client from '../providers/Database';
 import Log from '../middlewares/Log';
-import * as bf from '../controllers/Api/Bitflyer';
+import * as bf from '../controllers/Bitflyer';
 
 interface Ticker {
   product_code: string,

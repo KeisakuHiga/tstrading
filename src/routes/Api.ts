@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import HomeController from '../controllers/Api/Home';
-import BitflyerController from '../controllers/Api/Bitflyer';
+import HomeController from '../controllers/Home';
+import BitflyerController from '../controllers/Bitflyer';
 
 const router = Router();
 

@@ -1,8 +1,8 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import moment from 'moment';
 import { Client } from 'jsonrpc2-ws';
-import Log from '../../middlewares/Log';
-import Locals from '../../providers/Locals';
+import Log from '../middlewares/Log';
+import Locals from '../providers/Locals';
 
 interface Market {
 	product_code: string;

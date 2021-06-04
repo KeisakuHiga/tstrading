@@ -1,4 +1,4 @@
-import Locals from '../../providers/Locals';
+import Locals from '../providers/Locals';
 
 class Home {
 	public static index(req: any, res: any): any {

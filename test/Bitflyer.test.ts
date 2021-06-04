@@ -1,4 +1,4 @@
-import Bitflyer from '../src/controllers/Api/Bitflyer';
+import Bitflyer from '../src/controllers/Bitflyer';
 
 test('timestampToISO8601', () => {
 	const testDate = new Date('2021-06-03T20:45:29.123');
