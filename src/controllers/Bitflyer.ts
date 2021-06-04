@@ -113,12 +113,12 @@ export default class Bitflyer {
 		return list;
 	}
 
-	static timestampToISO8601(timestamp: Date): string {
+	static timestampToISO8601(timestamp: string): string {
 		return moment(timestamp).toISOString(keepOffset);
 	}
 
 	static truncateTimestamp(
-		timestamp: Date,
+		timestamp: string,
 		duration: moment.unitOfTime.StartOf,
 	): string {
 		return moment(timestamp).startOf(duration).toISOString(keepOffset);
