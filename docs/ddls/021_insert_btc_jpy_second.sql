@@ -1,10 +1,10 @@
 INSERT INTO btc_jpy_second
   (
   time,
-  open_price,
-  close_price,
-  high_price,
-  low_price,
+  open,
+  close,
+  high,
+  low,
   volume
   )
 VALUES(
