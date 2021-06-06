@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import moment from 'moment';
+import { unitOfTime } from 'moment';
 import { Client } from 'jsonrpc2-ws';
 import Log from '../middlewares/Log';
 import Locals from '../providers/Locals';
@@ -119,8 +120,11 @@ export default class Bitflyer {
 
 	static truncateTimestamp(
 		timestamp: string,
-		duration: moment.unitOfTime.StartOf,
+		duration: string,
 	): string {
-		return moment(timestamp).startOf(duration).toISOString(keepOffset);
+		const period: string = duration;
+		return moment(timestamp)
+			.startOf(period as unitOfTime.StartOf)
+			.toISOString(keepOffset);
 	}
 }
