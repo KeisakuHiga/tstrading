@@ -1,6 +1,7 @@
 import client from '../providers/Database';
 import Log from '../middlewares/Log';
-import * as bf from '../controllers/Bitflyer';
+import Bitflyer from '../controllers/Bitflyer';
+import moment from 'moment';
 
 interface Ticker {
   product_code: string,
@@ -20,29 +21,59 @@ interface Ticker {
   volume_by_product: number
 }
 
+interface ICandle {
+	time: Date;
+	open: number;
+	close: number;
+	high: number;
+	low: number;
+	volume: number;
+} 
 export default class Candle {
-	static async getCandle(product_code: string, duration: string, dateTime: string): Promise<any> {
+	static async getCandle(
+		productCode: string,
+		duration: string,
+		dateTime: moment.Moment,
+	): Promise<ICandle> | null {
+    const truncatedDateTime: moment.Moment = Bitflyer.truncateTimestamp(dateTime, duration);
+    const timeStr: string = Bitflyer.timestampToISO8601(truncatedDateTime)
+    const sql = `
+      SELECT * FROM ${productCode}_${duration}
+      WHERE time = '${timeStr}'
+    ;`
 		try {
-			const { rows } = await client.query('SELECT NOW() as now');
-			console.log(rows[0]);
+      const { rows  } = await client.query(sql);
+      if (!rows[0]) {
+        return null
+			}
+      return rows[0];
 		} catch (err) {
-			Log.error(err.message);
-		}
+      Log.error(err.message);
+    }
 	}
-  static async createCandleWithDuration(ticker: Ticker, productCode: string, duration: Date): Promise<any> {
-    const { timestamp, } = ticker;
-    // check if there is candle
-    let sql = `
-      SELECT * FROM btc_jpy_${duration}
-      WHERE time = ${}
-    `
-    
-    const currentCandle = client.query(sql)
-    // create the first candle if there is not a candle
-    // update 
-    sql = `
-      INSERT INTO ${table_name}
-      VALUES (${timestamp},${open_price},${close_price},${high_price},${low_price},${volume});
-    `;
-	}
+
+	// static async createCandleWithDuration(
+	// 	ticker: Ticker,
+	// 	productCode: string,
+	// 	duration: string,
+	// ): Promise<any> {
+	// 	const { timestamp } = ticker;
+	// 	// truncate timestamp by duration
+	// 	const currentTime: string = bf.default.truncateTimestamp(
+	// 		ticker.timestamp,
+	// 		duration,
+	// 	);
+	// 	// check if there is candle
+	// 	const currentCandle = this.getCandle(duration, currentTime);
+	// 	if (!currentCandle) {
+	// 		// create the first candle if there is not a candle
+	// 		const sql = `
+  //       INSERT INTO ${table_name}
+  //       VALUES (${timestamp},${open},${close},${high},${low},${volume});
+  //     `;
+	// 		const result = client.query(sql);
+	// 	} else {
+	// 		// update current candle
+	// 	}
+	// }
 }

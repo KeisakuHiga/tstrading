@@ -36,7 +36,6 @@ interface ExtendedAxiosReqConf extends AxiosRequestConfig {
 
 const baseURL = 'https://api.bitflyer.com/v1';
 const bfWsLightStreamURL = 'wss://ws.lightstream.bitflyer.com/json-rpc';
-const keepOffset = true;
 
 export default class Bitflyer {
 	static async markets(_: any, res: any): Promise<any> {
@@ -114,17 +113,26 @@ export default class Bitflyer {
 		return list;
 	}
 
-	static timestampToISO8601(timestamp: string): string {
-		return moment(timestamp).toISOString(keepOffset);
+	/**
+	 * timestampをString型でISO8601に変換する
+	 * @param timestamp moment.Moment
+	 * @returns string
+	 */
+	static timestampToISO8601(timestamp: moment.Moment): string {
+		return moment(timestamp).toISOString();
 	}
 
+	/**
+	 * durationに合わせてtimestampを整える（duration='hour'なら'second'以下を切り捨て）
+	 * @param timestamp moment.Moment
+	 * @param duration string
+	 * @returns moment.Moment
+	 */
 	static truncateTimestamp(
-		timestamp: string,
+		timestamp: moment.Moment,
 		duration: string,
-	): string {
+	): moment.Moment {
 		const period: string = duration;
-		return moment(timestamp)
-			.startOf(period as unitOfTime.StartOf)
-			.toISOString(keepOffset);
+		return moment.utc(timestamp).startOf(period as unitOfTime.StartOf);
 	}
 }
