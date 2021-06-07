@@ -1,6 +1,6 @@
 CREATE TABLE signal_events
 (
-  time TIMESTAMP NOT NULL,
+  time TIMESTAMP WITH TIME ZONE NOT NULL,
   product_code VARCHAR(100),
   side VARCHAR(100),
   price NUMERIC,
@@ -10,7 +10,7 @@ CREATE TABLE signal_events
 
 CREATE TABLE btc_jpy_second
 (
-  time TIMESTAMP NOT NULL,
+  time TIMESTAMP WITH TIME ZONE NOT NULL,
   open NUMERIC,
   close NUMERIC,
   high NUMERIC,
@@ -21,7 +21,7 @@ CREATE TABLE btc_jpy_second
 
 CREATE TABLE btc_jpy_minute
 (
-  time TIMESTAMP NOT NULL,
+  time TIMESTAMP WITH TIME ZONE NOT NULL,
   open NUMERIC,
   close NUMERIC,
   high NUMERIC,
@@ -32,7 +32,7 @@ CREATE TABLE btc_jpy_minute
 
 CREATE TABLE btc_jpy_hour
 (
-  time TIMESTAMP NOT NULL,
+  time TIMESTAMP WITH TIME ZONE NOT NULL,
   open NUMERIC,
   close NUMERIC,
   high NUMERIC,
@@ -43,7 +43,7 @@ CREATE TABLE btc_jpy_hour
 
 CREATE TABLE btc_jpy_day
 (
-  time TIMESTAMP NOT NULL,
+  time TIMESTAMP WITH TIME ZONE NOT NULL,
   open NUMERIC,
   close NUMERIC,
   high NUMERIC,

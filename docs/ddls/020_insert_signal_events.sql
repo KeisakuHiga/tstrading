@@ -7,7 +7,7 @@ INSERT INTO signal_events
   size
   )
 VALUES(
-    '2021-06-01T02:43:34.823',
+    '2021-06-01T02:43:34.823Z',
     'BTC_JPY',
     'BUY',
     33170,
