@@ -33,7 +33,7 @@ export default class Candle {
 	static async getCandle(
 		productCode: string,
 		duration: string,
-		timestamp: moment.Moment,
+		timestamp: string,
 	): Promise<ICandle> | null {
 		const currentTime: moment.Moment = moment
 			.utc(timestamp)
@@ -46,7 +46,6 @@ export default class Candle {
 		Log.info(sql);
 		try {
 			const { rows  } = await client.query(sql);
-			Log.info(typeof rows[0]);
       if (!rows[0]) {
         return null
 			}
@@ -58,14 +57,16 @@ export default class Candle {
 
 	static async createCandleWithDuration(
 		ticker: Ticker,
-		productCode: string,
 		duration: string,
-	): Promise<any> {
-		const { timestamp } = ticker;
+	): Promise<boolean | Error> {
+		const { product_code: productCode, timestamp, ltp, volume } = ticker;
+
 		// truncate timestamp by duration
-		const currentTime: moment.Moment = moment
+		const currentTime: string = moment
 			.utc(timestamp)
-			.startOf(duration as unitOfTime.StartOf);
+			.startOf(duration as unitOfTime.StartOf)
+			.toISOString();
+
 		// check if there is candle
 		const currentCandle: ICandle = await this.getCandle(
 			productCode,
@@ -74,14 +75,20 @@ export default class Candle {
 		);
 		if (!currentCandle) {
 			// create the first candle if there is not a candle
-			return 'nothing record!';
-			// 	const sql = `
-			//     INSERT INTO ${table_name}
-			//     VALUES (${timestamp},${open},${close},${high},${low},${volume});
-			//   `;
-			// 	const result = client.query(sql);
+			const sql = `
+				INSERT INTO ${productCode}_${duration}
+				VALUES ('${currentTime}',${ltp},${ltp},${ltp},${ltp},${volume});
+			`;
+			Log.info(sql);
+			try {
+				await client.query(sql);
+				return true;
+			} catch (err) {
+				Log.error(err.message);
+				return new Error('fail to insert new candle');
+			}
 		}
 		// update current candle
-		return currentCandle;
+		return false;
 	}
 }
