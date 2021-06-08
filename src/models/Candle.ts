@@ -1,7 +1,7 @@
 import client from '../providers/Database';
 import Log from '../middlewares/Log';
-import Bitflyer from '../controllers/Bitflyer';
 import moment from 'moment';
+import { unitOfTime } from 'moment';
 
 interface Ticker {
   product_code: string,
@@ -33,16 +33,20 @@ export default class Candle {
 	static async getCandle(
 		productCode: string,
 		duration: string,
-		dateTime: moment.Moment,
+		timestamp: moment.Moment,
 	): Promise<ICandle> | null {
-    const truncatedDateTime: moment.Moment = Bitflyer.truncateTimestamp(dateTime, duration);
-    const timeStr: string = Bitflyer.timestampToISO8601(truncatedDateTime)
+		const currentTime: moment.Moment = moment
+			.utc(timestamp)
+			.startOf(duration as unitOfTime.StartOf);
+		const timeStr: string = moment(currentTime).toISOString();
     const sql = `
       SELECT * FROM ${productCode}_${duration}
       WHERE time = '${timeStr}'
     ;`
+		Log.info(sql);
 		try {
-      const { rows  } = await client.query(sql);
+			const { rows  } = await client.query(sql);
+			Log.info(typeof rows[0]);
       if (!rows[0]) {
         return null
 			}
@@ -52,28 +56,32 @@ export default class Candle {
     }
 	}
 
-	// static async createCandleWithDuration(
-	// 	ticker: Ticker,
-	// 	productCode: string,
-	// 	duration: string,
-	// ): Promise<any> {
-	// 	const { timestamp } = ticker;
-	// 	// truncate timestamp by duration
-	// 	const currentTime: string = bf.default.truncateTimestamp(
-	// 		ticker.timestamp,
-	// 		duration,
-	// 	);
-	// 	// check if there is candle
-	// 	const currentCandle = this.getCandle(duration, currentTime);
-	// 	if (!currentCandle) {
-	// 		// create the first candle if there is not a candle
-	// 		const sql = `
-  //       INSERT INTO ${table_name}
-  //       VALUES (${timestamp},${open},${close},${high},${low},${volume});
-  //     `;
-	// 		const result = client.query(sql);
-	// 	} else {
-	// 		// update current candle
-	// 	}
-	// }
+	static async createCandleWithDuration(
+		ticker: Ticker,
+		productCode: string,
+		duration: string,
+	): Promise<any> {
+		const { timestamp } = ticker;
+		// truncate timestamp by duration
+		const currentTime: moment.Moment = moment
+			.utc(timestamp)
+			.startOf(duration as unitOfTime.StartOf);
+		// check if there is candle
+		const currentCandle: ICandle = await this.getCandle(
+			productCode,
+			duration,
+			currentTime,
+		);
+		if (!currentCandle) {
+			// create the first candle if there is not a candle
+			return 'nothing record!';
+			// 	const sql = `
+			//     INSERT INTO ${table_name}
+			//     VALUES (${timestamp},${open},${close},${high},${low},${volume});
+			//   `;
+			// 	const result = client.query(sql);
+		}
+		// update current candle
+		return currentCandle;
+	}
 }
