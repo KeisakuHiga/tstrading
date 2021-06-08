@@ -112,27 +112,4 @@ export default class Bitflyer {
 		});
 		return list;
 	}
-
-	/**
-	 * timestampをString型でISO8601に変換する
-	 * @param timestamp moment.Moment
-	 * @returns string
-	 */
-	static timestampToISO8601(timestamp: moment.Moment): string {
-		return moment(timestamp).toISOString();
-	}
-
-	/**
-	 * durationに合わせてtimestampを整える（duration='hour'なら'second'以下を切り捨て）
-	 * @param timestamp moment.Moment
-	 * @param duration string
-	 * @returns moment.Moment
-	 */
-	static truncateTimestamp(
-		timestamp: moment.Moment,
-		duration: string,
-	): moment.Moment {
-		const period: string = duration;
-		return moment.utc(timestamp).startOf(period as unitOfTime.StartOf);
-	}
 }
