@@ -4,21 +4,21 @@ import moment from 'moment';
 import { unitOfTime } from 'moment';
 
 interface Ticker {
-  product_code: string,
-  state: string,
-  timestamp: string,
-  tick_id: number,
-  best_bid: number,
-  best_ask: number,
-  best_bid_size: number,
-  best_ask_size: number,
-  total_bid_depth: number,
-  total_ask_depth: number,
-  market_bid_size: number,
-  market_ask_size: number,
-  ltp: number,
-  volume: number,
-  volume_by_product: number
+	product_code: string;
+	state: string;
+	timestamp: string;
+	tick_id: number;
+	best_bid: number;
+	best_ask: number;
+	best_bid_size: number;
+	best_ask_size: number;
+	total_bid_depth: number;
+	total_ask_depth: number;
+	market_bid_size: number;
+	market_ask_size: number;
+	ltp: number;
+	volume: number;
+	volume_by_product: number;
 }
 
 interface ICandle {
@@ -28,7 +28,7 @@ interface ICandle {
 	high: number;
 	low: number;
 	volume: number;
-} 
+}
 export default class Candle {
 	static async getCandle(
 		productCode: string,
@@ -39,20 +39,20 @@ export default class Candle {
 			.utc(timestamp)
 			.startOf(duration as unitOfTime.StartOf);
 		const timeStr: string = moment(currentTime).toISOString();
-    const sql = `
+		const sql = `
       SELECT * FROM ${productCode}_${duration}
-      WHERE time = '${timeStr}'
-    ;`
+      WHERE time = '${timeStr}';
+    `;
 		Log.info(sql);
 		try {
-			const { rows  } = await client.query(sql);
-      if (!rows[0]) {
-        return null
+			const { rows } = await client.query(sql);
+			if (!rows[0]) {
+				return null;
 			}
-      return rows[0];
+			return rows[0];
 		} catch (err) {
-      Log.error(err.message);
-    }
+			Log.error(err.message);
+		}
 	}
 
 	static async createCandleWithDuration(
@@ -85,10 +85,47 @@ export default class Candle {
 				return true;
 			} catch (err) {
 				Log.error(err.message);
-				return new Error('fail to insert new candle');
+				return new Error('Fail to insert new candle');
+			}
+		} else {
+			// update current candle
+			const newCandle: ICandle = {
+				time: currentCandle.time,
+				open: currentCandle.open,
+				close: currentCandle.close,
+				high: currentCandle.high,
+				low: currentCandle.low,
+				volume: currentCandle.volume,
+			};
+			if (currentCandle.high < ltp) {
+				newCandle.high = ltp;
+			}
+			if (currentCandle.low > ltp) {
+				newCandle.low = ltp;
+			}
+			newCandle.close = ltp;
+			newCandle.volume = volume;
+
+			const sql = `
+				UPDATE ${productCode}_${duration}
+				SET
+					time = '${currentTime}',
+					open = ${newCandle.open},
+					close = ${newCandle.close},
+					high = ${newCandle.high},
+					low = ${newCandle.low},
+					volume = ${newCandle.volume}
+				WHERE time = '${currentTime}';
+			`;
+			Log.info(sql);
+			try {
+				await client.query(sql);
+				Log.info('succeeded updating candle');
+				return false;
+			} catch (err) {
+				Log.error(err.message);
+				return new Error('Fail to update candle');
 			}
 		}
-		// update current candle
-		return false;
 	}
 }

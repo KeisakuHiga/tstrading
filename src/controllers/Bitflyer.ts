@@ -1,9 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import moment from 'moment';
-import { unitOfTime } from 'moment';
-import { Client } from 'jsonrpc2-ws';
 import Log from '../middlewares/Log';
 import Locals from '../providers/Locals';
+import Candle from '../models/Candle';
 
 interface Market {
 	product_code: string;
@@ -78,10 +76,9 @@ export default class Bitflyer {
 				console.log(channel, 'Subscribed.');
 			}
 		});
-		// channel messages handling
-		client.methods.set('channelMessage', (client, notify) => {
-			console.log('*'.repeat(50));
-			console.log('channelMessage', notify.channel, notify.message);
+		// channel messages handling -> insert notify.message into database
+		client.methods.set('channelMessage', async (client: any, notify: any) => {
+			await Candle.createCandleWithDuration(notify.message, 'minute');
 		});
 		// example of notify.message
 		// {
@@ -101,8 +98,6 @@ export default class Bitflyer {
 		//   "volume": 6703.96837634,
 		//   "volume_by_product": 6703.96837634
 		// }
-
-		// insert notify.message into database
 	}
 	static getPublicChannels(): Array<string> {
 		const pcs = Locals.config().productCodes;
