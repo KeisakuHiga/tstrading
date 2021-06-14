@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import Log from '../middlewares/Log';
 import Locals from '../providers/Locals';
 import Candle from '../models/Candle';
+import { Client } from 'jsonrpc2-ws';
 
 interface Market {
 	product_code: string;
@@ -55,7 +56,7 @@ export default class Bitflyer {
 			const { data } = await axios.get<Ticker>(`${baseURL}/ticker`, options);
 			return res.json({
 				ticker: data,
-			});
+			});	
 		} catch (err) {
 			Log.error(err.message);
 		}
@@ -78,7 +79,11 @@ export default class Bitflyer {
 		});
 		// channel messages handling -> insert notify.message into database
 		client.methods.set('channelMessage', async (client: any, notify: any) => {
-			await Candle.createCandleWithDuration(notify.message, 'minute');
+			// console.log(notify.channel, notify.message);
+			const durations: Array<string> = Locals.config().durations;
+			durations.forEach(async d => {
+				await Candle.createCandleWithDuration(notify.message, d);
+			})
 		});
 		// example of notify.message
 		// {
