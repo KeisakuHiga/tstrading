@@ -30,6 +30,10 @@ interface ICandle {
 	volume: number;
 }
 export default class Candle {
+	static getTableName(productCode: string, duration: string): string {
+		return `${productCode}_${duration}`;
+	}
+
 	static async getCandle(
 		productCode: string,
 		duration: string,
@@ -39,8 +43,9 @@ export default class Candle {
 			.utc(timestamp)
 			.startOf(duration as unitOfTime.StartOf);
 		const timeStr: string = moment(currentTime).toISOString();
+		const tableName: string = this.getTableName(productCode, duration);
 		const sql = `
-      SELECT * FROM ${productCode}_${duration}
+      SELECT * FROM ${tableName}
       WHERE time = '${timeStr}';
     `;
 		Log.info(sql);
@@ -75,8 +80,9 @@ export default class Candle {
 		);
 		if (!currentCandle) {
 			// create the first candle if there is not a candle
+			const tableName: string = this.getTableName(productCode, duration);
 			const sql = `
-				INSERT INTO ${productCode}_${duration}
+				INSERT INTO ${tableName}
 				VALUES ('${currentTime}',${ltp},${ltp},${ltp},${ltp},${volume});
 			`;
 			Log.info(sql);
@@ -106,8 +112,9 @@ export default class Candle {
 			newCandle.close = ltp;
 			newCandle.volume = volume;
 
+			const tableName: string = this.getTableName(productCode, duration);
 			const sql = `
-				UPDATE ${productCode}_${duration}
+				UPDATE ${tableName}
 				SET
 					time = '${currentTime}',
 					open = ${newCandle.open},
