@@ -1,5 +1,5 @@
 import express from 'express';
-
+import cors from 'cors';
 import Locals from './Locals';
 import Routes from './Routes';
 
@@ -8,6 +8,7 @@ class Express {
 
 	constructor() {
 		this.express = express();
+		this.express.use(cors());
 		this.mountRoutes();
 	}
 
