@@ -59,6 +59,28 @@ export default class Candle {
 			Log.error(err.message);
 		}
 	}
+	
+	static async getCandles(
+		productCode: string,
+		duration: string,
+	): Promise<Array<ICandle>> | null {
+		const tableName: string = this.getTableName(productCode, duration);
+		const sql = `
+      SELECT * FROM ${tableName};
+			`;
+		Log.info(sql);
+		try {
+			const { rows } = await client.query(sql);
+			if (!rows) {
+				return null;
+			}
+			console.log(typeof rows);
+			console.log(rows);
+			return rows;
+		} catch (err) {
+			Log.error(err.message);
+		}
+	}
 
 	static async createCandleWithDuration(
 		ticker: Ticker,
