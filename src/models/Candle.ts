@@ -74,8 +74,6 @@ export default class Candle {
 			if (!rows) {
 				return null;
 			}
-			console.log(typeof rows);
-			console.log(rows);
 			return rows;
 		} catch (err) {
 			Log.error(err.message);
