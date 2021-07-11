@@ -79,30 +79,11 @@ export default class Bitflyer {
 		});
 		// channel messages handling -> insert notify.message into database
 		client.methods.set('channelMessage', async (client: any, notify: any) => {
-			// console.log(notify.channel, notify.message);
 			const durations: Array<string> = Locals.config().durations;
 			durations.forEach(async d => {
 				await Candle.createCandleWithDuration(notify.message, d);
 			})
 		});
-		// example of notify.message
-		// {
-		//   "product_code": "BTC_JPY",
-		//   "timestamp": "2019-04-11T05:14:12.3739915Z",
-		//   "state": "RUNNING",
-		//   "tick_id": 25965446,
-		//   "best_bid": 580006,
-		//   "best_ask": 580771,
-		//   "best_bid_size": 2.00000013,
-		//   "best_ask_size": 0.4,
-		//   "total_bid_depth": 1581.64414981,
-		//   "total_ask_depth": 1415.32079982,
-		//   "market_bid_size": 0,
-		//   "market_ask_size": 0,
-		//   "ltp": 580790,
-		//   "volume": 6703.96837634,
-		//   "volume_by_product": 6703.96837634
-		// }
 	}
 	static getPublicChannels(): Array<string> {
 		const pcs = Locals.config().productCodes;
