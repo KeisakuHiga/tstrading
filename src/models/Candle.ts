@@ -1,4 +1,4 @@
-import client from '../providers/Database';
+import { Database, client } from '../providers/Database';
 import Log from '../middlewares/Log';
 import moment from 'moment';
 import { unitOfTime } from 'moment';
@@ -30,10 +30,6 @@ interface ICandle {
 	volume: number;
 }
 export default class Candle {
-	static getTableName(productCode: string, duration: string): string {
-		return `${productCode}_${duration}`;
-	}
-
 	static async getCandle(
 		productCode: string,
 		duration: string,
@@ -43,7 +39,7 @@ export default class Candle {
 			.utc(timestamp)
 			.startOf(duration as unitOfTime.StartOf);
 		const timeStr: string = moment(currentTime).toISOString();
-		const tableName: string = this.getTableName(productCode, duration);
+		const tableName: string = Database.getTableName(productCode, duration);
 		const sql = `
       SELECT * FROM ${tableName}
       WHERE time = '${timeStr}';
@@ -64,7 +60,7 @@ export default class Candle {
 		productCode: string,
 		duration: string,
 	): Promise<Array<ICandle>> | null {
-		const tableName: string = this.getTableName(productCode, duration);
+		const tableName: string = Database.getTableName(productCode, duration);
 		const sql = `
       SELECT * FROM ${tableName};
 			`;
@@ -100,7 +96,7 @@ export default class Candle {
 		);
 		if (!currentCandle) {
 			// create the first candle if there is not a candle
-			const tableName: string = this.getTableName(productCode, duration);
+			const tableName: string = Database.getTableName(productCode, duration);
 			const sql = `
 				INSERT INTO ${tableName}
 				VALUES ('${currentTime}',${ltp},${ltp},${ltp},${ltp},${volume});
@@ -132,7 +128,7 @@ export default class Candle {
 			newCandle.close = ltp;
 			newCandle.volume = volume;
 
-			const tableName: string = this.getTableName(productCode, duration);
+			const tableName: string = Database.getTableName(productCode, duration);
 			const sql = `
 				UPDATE ${tableName}
 				SET
